@@ -11,3 +11,6 @@ https://www.youtube.com/watch?v=rzBVTPaUUDg&list=PLZm85UZQLd2TPXpUJfDEdWTSgszion
 
 - By using the application state manager, each state will have its own update and render functions
 - This makes it easier to only update the logic for the current state
+
+A friend of mine suggested this tutorial, but I have to looked at it yet
+https://www.youtube.com/watch?v=85A1w1iD2oA
