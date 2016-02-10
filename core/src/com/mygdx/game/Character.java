@@ -121,7 +121,7 @@ public class Character {
 
         if (pos.x >= bounds.x && pos.x <= bounds.x + bounds.width
                 && pos.y >= bounds.y && pos.y <= pos.y + bounds.height) {
-            
+
         }
     }
 
