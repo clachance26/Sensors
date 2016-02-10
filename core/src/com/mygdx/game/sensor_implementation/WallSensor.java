@@ -9,9 +9,6 @@ import com.mygdx.game.FixedObject;
 
 import java.util.List;
 
-/**
- * Created by Christopher on 2/10/2016.
- */
 public class WallSensor {
 
     private static final float RANGE = 200;
