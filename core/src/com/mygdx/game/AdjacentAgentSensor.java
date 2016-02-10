@@ -25,15 +25,13 @@ public class AdjacentAgentSensor {
                 characterCenter.set(character.getPosition().x + (character.getSize()/2), character.getPosition().y + (character.getSize()/2));
                 if(adjacent.dst(character.getPosition()) < RANGE)
                 {
-                    float angle = (character.getPosition().angle(adjacent) + character.getAngle() + 180) %360;
+                    float angle = (character.getPosition().angle(adjacent) - character.getAngle());
+                    if(angle < 0){
+                        angle += 360;
+                    }
 
-
-
-//                    float angle = (float) Math.toDegrees(Math.atan2(characterCenter.y - adjacent.y, characterCenter.x - adjacent.x));
-//
-//                    if(angle < 0){
-//                        angle += 360;
-//                    }
+                    angle += 180;
+                    angle = angle % 360;
 
                     System.out.println("Adjacent Agent detected at " + angle + " degrees "
                             + character.getPosition().dst(adjacent) + " pixels away.");
