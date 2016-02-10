@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.math.*;
 import com.mygdx.game.sensor_implementation.AdjacentAgentSensor;
+import com.mygdx.game.sensor_implementation.PieSliceSensor;
 import com.mygdx.game.sensor_implementation.WallSensor;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class Character {
     private static final float FORWARD_DECAY = 0.6f;
 
     private AdjacentAgentSensor aaSensor = new AdjacentAgentSensor(this);
+    private PieSliceSensor psSensor = new PieSliceSensor(this, 0, 0);
 
     // Position of the character
     private Vector2 pos;
@@ -62,6 +64,10 @@ public class Character {
         adjustToBounds(bounds);
         evaluateAASensor(objects);
         evaluateWallSensor(objects);
+        evaluatePieSliceSensor(objects, 0, 90);
+        evaluatePieSliceSensor(objects, 90, 180);
+        evaluatePieSliceSensor(objects, 180, 270);
+        evaluatePieSliceSensor(objects, 270, 360);
     }
 
     private void processTurn(float turn) {
@@ -105,6 +111,13 @@ public class Character {
 
     public void evaluateWallSensor(List<FixedObject> objects) {
         wallSensor.Sense(objects);
+    }
+
+    public void evaluatePieSliceSensor(List<FixedObject> objects, int min, int max){
+        psSensor.setDegreesMin(min);
+        psSensor.setDegreesMax(max);
+        int num = psSensor.detect(objects);
+        System.out.println("There are " + num + " entities between " + min + " " + max);
     }
 
     public Vector2 getPosition() {
