@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.*;
+import com.mygdx.game.sensor_implementation.WallSensor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,33 +24,7 @@ public class Character {
     // Current angle of the character
     protected float ang;
 
-    public Vector2 getPosition() {
-        return pos;
-    }
-
-    public void setPosition(Vector2 value) {
-        pos.set(value);
-    }
-
-    public Vector2 getVelocity() {
-        return vel;
-    }
-
-    public void setVelocity(Vector2 value) {
-        vel.set(value);
-    }
-
-    public float getAngle() {
-        return ang;
-    }
-
-    public void setAngle(float value) {
-        ang = value;
-    }
-
-    public float getSize() {
-        return SIZE;
-    }
+    private WallSensor wallSensor = new WallSensor(0, this);
 
     public Character(float x, float y, float ang) {
         // Set the position of this character
@@ -87,6 +62,7 @@ public class Character {
         }
         adjustToBounds(bounds);
         evaluateAASensor(objects);
+        evaluateWallSensor(objects);
     }
 
     private void processTurn(float turn) {
@@ -124,8 +100,39 @@ public class Character {
         return false;
     }
 
-    private void evaluateAASensor(List<FixedObject> objects)
-    {
+    private void evaluateAASensor(List<FixedObject> objects) {
         aaSensor.detect(objects);
+    }
+
+    public void evaluateWallSensor(List<FixedObject> objects) {
+        wallSensor.Sense(objects);
+    }
+
+    public Vector2 getPosition() {
+        return pos;
+    }
+
+    public void setPosition(Vector2 value) {
+        pos.set(value);
+    }
+
+    public Vector2 getVelocity() {
+        return vel;
+    }
+
+    public void setVelocity(Vector2 value) {
+        vel.set(value);
+    }
+
+    public float getAngle() {
+        return ang;
+    }
+
+    public void setAngle(float value) {
+        ang = value;
+    }
+
+    public float getSize() {
+        return SIZE;
     }
 }

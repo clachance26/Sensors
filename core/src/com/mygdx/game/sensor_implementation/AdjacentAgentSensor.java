@@ -1,13 +1,15 @@
-package com.mygdx.game;
+package com.mygdx.game.sensor_implementation;
 
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.*;
+import com.mygdx.game.Character;
 
 import java.util.List;
 
 public class AdjacentAgentSensor {
 
     private static final int RANGE = 100;
-    private Character character;
+    private com.mygdx.game.Character character;
     private Vector2 adjacent = new Vector2();
     private Vector2 characterCenter = new Vector2();
 
