@@ -1,0 +1,85 @@
+package com.mygdx.game.sensor_implementation;
+
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.math.collision.Ray;
+import com.mygdx.game.Character;
+import com.mygdx.game.FixedObject;
+
+import java.util.List;
+
+/**
+ * Created by Christopher on 2/10/2016.
+ */
+public class WallSensor {
+
+    private static final float RANGE = 200;
+    private Character character;
+    private float angle;
+    private Ray ray = new Ray();
+    private Vector3 intersection = new Vector3();
+
+    public WallSensor(float angle, Character character) {
+        this.character = character;
+        this.angle = angle;
+    }
+
+    /**
+     * Sense will do the wall sensing for the given character and offset angle
+     * @param objects - the objects in the game world
+     * @return - the distance of the closest wall that the wall sensor finds
+     *         - -1 if the wall sensor did not find a wall within the given range
+     */
+    public float Sense(List<FixedObject> objects) {
+
+        //To implement the wall sensor, we are going to create a ray
+        //The ray will start at the center of the character and extend in the direction of the angle with respect to the character
+        //The exact angle the ray will move is the heading of the character + the angle passed in
+        //We want the ray to start at the center of the character so we will use its size to find the middle
+        Vector3 characterCenter = new Vector3(character.getPosition().x + (character.getSize()/2),
+                character.getPosition().y + (character.getSize()/2), 0);
+
+
+        //To find the direction of the ray, we just have to find the cos(angle) and sin(angle)
+        //cos(angle) is the x component of the direction vector, while sin is the y component
+        //The angles we are using to represent character position increase clockwise while the unit circle increases counterclockwise
+        //To find the unitCircleRelativeAngle we do 360 - angle
+        float resultantAngle = 360 - (character.getAngle() + angle);
+
+        Vector3 rayDirection = new Vector3((float) Math.cos(Math.toRadians(resultantAngle)), (float) Math.sin(Math.toRadians(resultantAngle)), 0);
+        ray.set(characterCenter, rayDirection);
+
+        float distToClosestObject = Float.MAX_VALUE;
+
+        for (FixedObject object : objects) {
+
+            boolean intersected;
+
+            //For each game object, create a bounding box for it
+            //Then check if the ray intersects the bounding box
+            //If it intersects, it will update intersection (a vector) to be the intersection point
+            Vector3 min = new Vector3(object.getPosition().x, object.getPosition().y, 0);
+            Vector3 max = new Vector3(object.getPosition().x + object.getWidth(), object.getPosition().y + object.getHeight(), 0);
+
+            BoundingBox boundingBox = new BoundingBox(min, max);
+            intersected = Intersector.intersectRayBounds(ray, boundingBox, intersection);
+
+            //Now find the distance to the intersection point (if there was one)
+            if (intersected) {
+                float intersectDistance = characterCenter.dst(intersection);
+                //Check to see if this object is the closest object
+                if (intersectDistance < distToClosestObject) {
+                    distToClosestObject = intersectDistance;
+                }
+            }
+        }
+
+        if (distToClosestObject > RANGE) {
+            distToClosestObject = -1;
+        }
+
+        if (distToClosestObject >= 0) {System.out.println("Wall Sensor: " + distToClosestObject);}
+        return distToClosestObject;
+    }
+}

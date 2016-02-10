@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.*;
+import com.mygdx.game.sensor_implementation.WallSensor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,43 +21,8 @@ public class Character {
     private Vector2 vel;
     // Current angle of the character
     protected float ang;
-    private Sprite characterSprite;
 
-    public Sprite getCharacterSprite() {
-        return characterSprite;
-    }
-
-    public void setCharacterSprite(Sprite value) {
-        characterSprite = value;
-    }
-
-    public Vector2 getPosition() {
-        return pos;
-    }
-
-    public void setPosition(Vector2 value) {
-        pos.set(value);
-    }
-
-    public Vector2 getVelocity() {
-        return vel;
-    }
-
-    public void setVelocity(Vector2 value) {
-        vel.set(value);
-    }
-
-    public float getAngle() {
-        return ang;
-    }
-
-    public void setAngle(float value) {
-        ang = value;
-    }
-
-    public float getSize() {
-        return SIZE;
-    }
+    private WallSensor wallSensor = new WallSensor(0, this);
 
     public Character(float x, float y, float ang) {
         // Set the position of this character
@@ -93,6 +59,7 @@ public class Character {
             pos.add(vel);
         }
         adjustToBounds(bounds);
+        evaluateWallSensor(objects);
     }
 
     private void processTurn(float turn) {
@@ -117,14 +84,6 @@ public class Character {
         }
     }
 
-    private void adjustToFixedObjectBounds(Rectangle bounds) {
-
-        if (pos.x >= bounds.x && pos.x <= bounds.x + bounds.width
-                && pos.y >= bounds.y && pos.y <= pos.y + bounds.height) {
-
-        }
-    }
-
     public boolean checkForCollisions(List<FixedObject> objects) {
 //        Vector2 normal = new Vector2();
 //        Vector2 temp = new Vector2();
@@ -146,12 +105,37 @@ public class Character {
             }
         }
         return false;
+    }
 
+    public float evaluateWallSensor(List<FixedObject> objects) {
+        return wallSensor.Sense(objects);
+    }
 
+    public Vector2 getPosition() {
+        return pos;
+    }
 
+    public void setPosition(Vector2 value) {
+        pos.set(value);
+    }
 
+    public Vector2 getVelocity() {
+        return vel;
+    }
 
+    public void setVelocity(Vector2 value) {
+        vel.set(value);
+    }
 
+    public float getAngle() {
+        return ang;
+    }
 
+    public void setAngle(float value) {
+        ang = value;
+    }
+
+    public float getSize() {
+        return SIZE;
     }
 }
