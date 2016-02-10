@@ -3,6 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Character {
     // Size of character.
     private static final int SIZE  = 25;
@@ -64,7 +67,7 @@ public class Character {
         vel = new Vector2();
     }
 
-    public void move(float forward, float turn, Rectangle bounds){
+    public void move(float forward, float turn, Rectangle bounds, List objects){
         processTurn(turn);
         if (forward != 0.0f) {
             // Forward key pressed. increase speed.
@@ -81,7 +84,14 @@ public class Character {
             ang += 360;
 
         // Move the character
-        pos.add(vel);
+        if(!checkForCollisions(objects)) {
+            pos.add(vel);
+        }
+        else{
+            vel.x = vel.x*-1;
+            vel.y = vel.y*-1;
+            pos.add(vel);
+        }
         adjustToBounds(bounds);
     }
 
@@ -113,5 +123,35 @@ public class Character {
                 && pos.y >= bounds.y && pos.y <= pos.y + bounds.height) {
             
         }
+    }
+
+    public boolean checkForCollisions(List<FixedObject> objects) {
+//        Vector2 normal = new Vector2();
+//        Vector2 temp = new Vector2();
+//        Vector2 velocity = new Vector2();
+        for(FixedObject object : objects)
+        {
+//            normal.set(this.getPosition()).sub(object.getPosition());
+//            float distance = normal.len();
+//
+//            if (distance < object.getSize()) {
+//                return true;
+//            }
+
+            Rectangle characterBounds = new Rectangle(this.getPosition().x, this.getPosition().y, this.getSize(), this.getSize());
+            Rectangle objectBounds = new Rectangle(object.getPosition().x, object.getPosition().y, object.getWidth(), object.getHeight());
+            if(Intersector.overlaps(characterBounds, objectBounds))
+            {
+                return true;
+            }
+        }
+        return false;
+
+
+
+
+
+
+
     }
 }

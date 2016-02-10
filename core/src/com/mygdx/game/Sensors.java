@@ -10,11 +10,14 @@ import com.badlogic.gdx.math.Rectangle;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Sensors extends ApplicationAdapter {
 
 	Rectangle bounds = new Rectangle(0, 0, 900, 600);
+	List<FixedObject> agentList = new ArrayList<FixedObject>();
 	SpriteBatch batch;
 	Texture backgroundTexture;
 	Texture characterTexture;
@@ -57,10 +60,16 @@ public class Sensors extends ApplicationAdapter {
 		controller = new KeyboardController();
 		character = new Character(800, 100, 270);
 		characterRegion = new TextureRegion(characterTexture);
-		horizontalWall = new FixedObject(400, 400, 0);
-		verticalWall = new FixedObject( 100, 100, 0);
-		agent1 = new FixedObject(a1x, a1y, 0);
-		agent2 = new FixedObject(a2x, a2y, 0);
+		horizontalWall = new FixedObject(400, 400, 0, 400, 50);
+		verticalWall = new FixedObject( 100, 100, 0, 100, 450);
+		agent1 = new FixedObject(a1x, a1y, 0, 100, 100);
+		agent2 = new FixedObject(a2x, a2y, 0, 100, 100);
+
+		agentList.add(agent1);
+		agentList.add(agent2);
+		agentList.add(horizontalWall);
+		agentList.add(verticalWall);
+
 
 	}
 
@@ -71,7 +80,8 @@ public class Sensors extends ApplicationAdapter {
 		batch.begin();
 
 		controller.readInput();
-		character.move(controller.getForward(), controller.getTurn(), bounds);
+		character.move(controller.getForward(), controller.getTurn(), bounds, agentList);
+		//character.checkForCollisions(agentList);
 
 		batch.draw(backgroundTexture, 0, 0);
 		//System.out.println(character.getPosition().x + " " + character.getPosition().y);
