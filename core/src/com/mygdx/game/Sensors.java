@@ -60,10 +60,10 @@ public class Sensors extends ApplicationAdapter {
 		controller = new KeyboardController();
 		character = new Character(800, 100, 270);
 		characterRegion = new TextureRegion(characterTexture);
-		horizontalWall = new FixedObject(400, 400, 0, 400, 50);
-		verticalWall = new FixedObject( 100, 100, 0, 100, 450);
-		agent1 = new FixedObject(a1x, a1y, 0, 100, 100);
-		agent2 = new FixedObject(a2x, a2y, 0, 100, 100);
+		horizontalWall = new FixedObject(400, 400, 0, 400, 50, false);
+		verticalWall = new FixedObject( 100, 100, 0, 100, 450, false);
+		agent1 = new FixedObject(a1x, a1y, 0, 100, 100, true);
+		agent2 = new FixedObject(a2x, a2y, 0, 100, 100, true);
 
 		agentList.add(agent1);
 		agentList.add(agent2);

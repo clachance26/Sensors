@@ -14,21 +14,14 @@ public class Character {
     // Decay speed.
     private static final float FORWARD_DECAY = 0.6f;
 
+    private AdjacentAgentSensor aaSensor = new AdjacentAgentSensor(this);
+
     // Position of the character
     private Vector2 pos;
     // Velocity of the character
     private Vector2 vel;
     // Current angle of the character
     protected float ang;
-    private Sprite characterSprite;
-
-    public Sprite getCharacterSprite() {
-        return characterSprite;
-    }
-
-    public void setCharacterSprite(Sprite value) {
-        characterSprite = value;
-    }
 
     public Vector2 getPosition() {
         return pos;
@@ -93,6 +86,7 @@ public class Character {
             pos.add(vel);
         }
         adjustToBounds(bounds);
+        evaluateAASensor(objects);
     }
 
     private void processTurn(float turn) {
@@ -126,18 +120,8 @@ public class Character {
     }
 
     public boolean checkForCollisions(List<FixedObject> objects) {
-//        Vector2 normal = new Vector2();
-//        Vector2 temp = new Vector2();
-//        Vector2 velocity = new Vector2();
         for(FixedObject object : objects)
         {
-//            normal.set(this.getPosition()).sub(object.getPosition());
-//            float distance = normal.len();
-//
-//            if (distance < object.getSize()) {
-//                return true;
-//            }
-
             Rectangle characterBounds = new Rectangle(this.getPosition().x, this.getPosition().y, this.getSize(), this.getSize());
             Rectangle objectBounds = new Rectangle(object.getPosition().x, object.getPosition().y, object.getWidth(), object.getHeight());
             if(Intersector.overlaps(characterBounds, objectBounds))
@@ -146,12 +130,10 @@ public class Character {
             }
         }
         return false;
+    }
 
-
-
-
-
-
-
+    private void evaluateAASensor(List<FixedObject> objects)
+    {
+        aaSensor.detect(objects);
     }
 }
