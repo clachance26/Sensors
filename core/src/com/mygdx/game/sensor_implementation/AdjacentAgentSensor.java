@@ -4,20 +4,24 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.*;
 import com.mygdx.game.Character;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdjacentAgentSensor {
 
-    private static final int RANGE = 100;
+    private static final int RANGE = 200;
     private com.mygdx.game.Character character;
     private Vector2 adjacent = new Vector2();
     private Vector2 characterCenter = new Vector2();
+    private List<AdjacentObject> adjacentObjects;
 
     public AdjacentAgentSensor(Character character){
         this.character = character;
     }
 
     public void detect(List<FixedObject> objects) {
+
+        adjacentObjects = new ArrayList<>();
 
         for(FixedObject object : objects)
         {
@@ -39,11 +43,15 @@ public class AdjacentAgentSensor {
                     }
                     degrees = degrees % 360;
 
-
-                    System.out.println("Adjacent Agent detected at " + degrees + " degrees "
-                            + character.getPosition().dst(adjacent) + " pixels away.");
+                    adjacentObjects.add(new AdjacentObject(degrees, character.getPosition().dst(adjacent)));
+//                    System.out.println("Adjacent Agent detected at " + degrees + " degrees "
+//                            + character.getPosition().dst(adjacent) + " pixels away.");
                 }
             }
         }
+    }
+
+    public List<AdjacentObject> getAdjacentObjects() {
+        return adjacentObjects;
     }
 }

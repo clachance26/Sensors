@@ -1,9 +1,11 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.math.*;
+import com.mygdx.game.debug.DebugOutput;
 import com.mygdx.game.sensor_implementation.AdjacentAgentSensor;
 import com.mygdx.game.sensor_implementation.WallSensor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Character {
@@ -14,16 +16,16 @@ public class Character {
     // Decay speed.
     private static final float FORWARD_DECAY = 0.6f;
 
-    private AdjacentAgentSensor aaSensor = new AdjacentAgentSensor(this);
+    private AdjacentAgentSensor aaSensor;
+    private List<WallSensor> wallSensors;
 
     // Position of the character
     private Vector2 pos;
     // Velocity of the character
     private Vector2 vel;
+
     // Current angle of the character
     protected float ang;
-
-    private WallSensor wallSensor = new WallSensor(0, this);
 
     public Character(float x, float y, float ang) {
         // Set the position of this character
@@ -32,6 +34,14 @@ public class Character {
 
         // Set starting velocity to 0;
         vel = new Vector2();
+
+        //Initialize Sensors
+        aaSensor = new AdjacentAgentSensor(this);
+        wallSensors = new ArrayList<>();
+        wallSensors.add(new WallSensor(0, this, "front"));
+        wallSensors.add((new WallSensor(90, this, "right")));
+        wallSensors.add(new WallSensor(270, this, "left"));
+
     }
 
     public void move(float forward, float turn, Rectangle bounds, List objects){
@@ -61,7 +71,12 @@ public class Character {
         }
         adjustToBounds(bounds);
         evaluateAASensor(objects);
-        evaluateWallSensor(objects);
+        int count = 0;
+        for (WallSensor wallSensor : wallSensors) {
+            evaluateWallSensor(wallSensors.get(count), objects);
+            count++;
+        }
+
     }
 
     private void processTurn(float turn) {
@@ -99,11 +114,10 @@ public class Character {
         return false;
     }
 
-    private void evaluateAASensor(List<FixedObject> objects) {
-        aaSensor.detect(objects);
+    private void evaluateAASensor(List<FixedObject> objects) {aaSensor.detect(objects);
     }
 
-    public void evaluateWallSensor(List<FixedObject> objects) {
+    public void evaluateWallSensor(WallSensor wallSensor, List<FixedObject> objects) {
         wallSensor.Sense(objects);
     }
 
@@ -133,5 +147,13 @@ public class Character {
 
     public float getSize() {
         return SIZE;
+    }
+
+    public List<WallSensor> getWallSensors() {
+        return wallSensors;
+    }
+
+    public AdjacentAgentSensor getAaSensor() {
+        return aaSensor;
     }
 }

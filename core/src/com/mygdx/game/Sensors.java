@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.debug.DebugOutput;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -35,6 +37,11 @@ public class Sensors extends ApplicationAdapter {
 	FixedObject agent1;
 	FixedObject agent2;
 
+	//This specifies the number of renders in between each output update
+	int debugOutputUpdateRate = 60;
+	//This is used to keep track of how often we need to output
+	int renderCount = 0;
+
 	int a1x, a1y, a2x, a2y;
 	
 	@Override
@@ -47,7 +54,7 @@ public class Sensors extends ApplicationAdapter {
 		agent1Texture = new Texture("agent1.png");
 		agent2Texture = new Texture("agent2.png");
 
-		Scanner scanner = null;
+		Scanner scanner;
 		try {
 			scanner = new Scanner(new File("agentLocations.txt"));
 			a1x = scanner.nextInt();
@@ -70,8 +77,6 @@ public class Sensors extends ApplicationAdapter {
 		agentList.add(agent2);
 		agentList.add(horizontalWall);
 		agentList.add(verticalWall);
-
-
 	}
 
 	@Override
@@ -91,6 +96,11 @@ public class Sensors extends ApplicationAdapter {
 		batch.draw(verticalWallTexture, verticalWall.getPosition().x, verticalWall.getPosition().y);
 		batch.draw(agent1Texture, agent1.getPosition().x, agent1.getPosition().y);
 		batch.draw(agent2Texture, agent2.getPosition().x, agent2.getPosition().y);
+
+		if (renderCount % debugOutputUpdateRate == 0) {
+			DebugOutput.printOutput(character);
+		}
 		batch.end();
+		renderCount++;
 	}
 }

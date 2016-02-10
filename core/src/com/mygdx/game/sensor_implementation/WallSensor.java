@@ -19,10 +19,13 @@ public class WallSensor {
     private float angle;
     private Ray ray = new Ray();
     private Vector3 intersection = new Vector3();
+    private String name;
+    private float distToClosestObject;
 
-    public WallSensor(float angle, Character character) {
+    public WallSensor(float angle, Character character, String name) {
         this.character = character;
         this.angle = angle;
+        this.name = name;
     }
 
     /**
@@ -48,7 +51,7 @@ public class WallSensor {
         Vector3 rayDirection = new Vector3((float) Math.cos(Math.toRadians(resultantAngle)), (float) Math.sin(Math.toRadians(resultantAngle)), 0);
         ray.set(characterCenter, rayDirection);
 
-        float distToClosestObject = Float.MAX_VALUE;
+        distToClosestObject = Float.MAX_VALUE;
 
         for (FixedObject object : objects) {
             if(!object.getIsAgent()){
@@ -77,8 +80,13 @@ public class WallSensor {
         if (distToClosestObject > RANGE) {
             distToClosestObject = -1;
         }
+    }
 
-        if (distToClosestObject >= 0) {System.out.println("Wall Sensor: " + distToClosestObject);}
+    public String getName() {
+        return name;
+    }
 
+    public float getDistToClosestObject() {
+        return distToClosestObject;
     }
 }
