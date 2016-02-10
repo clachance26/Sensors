@@ -5,11 +5,11 @@ import com.badlogic.gdx.math.*;
 
 public class Character {
     // Size of character.
-    private static final int SIZE  = 81;
+    private static final int SIZE  = 25;
     // Speed factor.
-    private static final float SPEED_FACTOR = 0.4f;
+    private static final float SPEED_FACTOR = 0.1f;
     // Decay speed.
-    private static final float FORWARD_DECAY = 0.8f;
+    private static final float FORWARD_DECAY = 0.6f;
 
     // Position of the character
     private Vector2 pos;
@@ -51,7 +51,7 @@ public class Character {
         ang = value;
     }
 
-    public float getDiameter() {
+    public float getSize() {
         return SIZE;
     }
 
@@ -86,7 +86,7 @@ public class Character {
     }
 
     private void processTurn(float turn) {
-		characterSprite.setRotation(turn);
+		this.ang -= turn*5;
     }
 
     private void adjustToBounds(Rectangle bounds) {
