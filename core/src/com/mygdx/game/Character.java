@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.math.*;
 import com.mygdx.game.debug.DebugOutput;
 import com.mygdx.game.sensor_implementation.AdjacentAgentSensor;
+import com.mygdx.game.sensor_implementation.PieSliceSensor;
 import com.mygdx.game.sensor_implementation.WallSensor;
 
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ public class Character {
     // Decay speed.
     private static final float FORWARD_DECAY = 0.6f;
 
+    private AdjacentAgentSensor aaSensor = new AdjacentAgentSensor(this);
+    private PieSliceSensor psSensor = new PieSliceSensor(this, 0, 0);
     private AdjacentAgentSensor aaSensor;
     private List<WallSensor> wallSensors;
 
@@ -23,10 +26,9 @@ public class Character {
     private Vector2 pos;
     // Velocity of the character
     private Vector2 vel;
-
     // Current angle of the character
     protected float ang;
-
+    
     public Character(float x, float y, float ang) {
         // Set the position of this character
         this.pos = new Vector2(x,y);
@@ -51,7 +53,7 @@ public class Character {
             vel.add(forward * (float)Math.cos(Math.toRadians (ang)) * SPEED_FACTOR,
                     forward * (float)-Math.sin (Math.toRadians (ang)) * SPEED_FACTOR);
         } else {
-            // Slow the ship down over time.
+            // Slow the character down over time.
             vel.scl(FORWARD_DECAY);
         }
 
@@ -77,6 +79,11 @@ public class Character {
             count++;
         }
 
+        evaluateWallSensor(objects);
+        evaluatePieSliceSensor(objects, 0, 90);
+        evaluatePieSliceSensor(objects, 90, 180);
+        evaluatePieSliceSensor(objects, 180, 270);
+        evaluatePieSliceSensor(objects, 270, 360);
     }
 
     private void processTurn(float turn) {
@@ -119,6 +126,13 @@ public class Character {
 
     public void evaluateWallSensor(WallSensor wallSensor, List<FixedObject> objects) {
         wallSensor.Sense(objects);
+    }
+
+    public void evaluatePieSliceSensor(List<FixedObject> objects, int min, int max){
+        psSensor.setDegreesMin(min);
+        psSensor.setDegreesMax(max);
+        int num = psSensor.detect(objects);
+        System.out.println("There are " + num + " entities between " + min + " " + max);
     }
 
     public Vector2 getPosition() {
