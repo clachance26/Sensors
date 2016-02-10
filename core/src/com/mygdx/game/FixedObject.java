@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class FixedObject {
     // Size of character.
-    private static final int SIZE  = 81;
+    private static final int SIZE  = 50;
 
     // Position of the character
     private Vector2 pos;
@@ -47,7 +47,7 @@ public class FixedObject {
         ang = value;
     }
 
-    public float getDiameter() {
+    public float getSize() {
         return SIZE;
     }
 }
