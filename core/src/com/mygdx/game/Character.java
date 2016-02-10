@@ -126,19 +126,27 @@ public class Character {
     }
 
     public boolean checkForCollisions(List<FixedObject> objects) {
-        Vector2 normal = new Vector2();
-        Vector2 temp = new Vector2();
-        Vector2 velocity = new Vector2();
+//        Vector2 normal = new Vector2();
+//        Vector2 temp = new Vector2();
+//        Vector2 velocity = new Vector2();
         for(FixedObject object : objects)
         {
-            normal.set(this.getPosition()).sub(object.getPosition());
-            float distance = normal.len();
+//            normal.set(this.getPosition()).sub(object.getPosition());
+//            float distance = normal.len();
+//
+//            if (distance < object.getSize()) {
+//                return true;
+//            }
 
-            if (distance < object.getSize()) {
+            Rectangle characterBounds = new Rectangle(this.getPosition().x, this.getPosition().y, this.getSize(), this.getSize());
+            Rectangle objectBounds = new Rectangle(object.getPosition().x, object.getPosition().y, object.getWidth(), object.getHeight());
+            if(Intersector.overlaps(characterBounds, objectBounds))
+            {
                 return true;
             }
         }
         return false;
+
 
 
 
