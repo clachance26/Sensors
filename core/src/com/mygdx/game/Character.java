@@ -1,10 +1,9 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.*;
+import com.mygdx.game.sensor_implementation.AdjacentAgentSensor;
 import com.mygdx.game.sensor_implementation.WallSensor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Character {

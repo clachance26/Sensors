@@ -27,12 +27,12 @@ public class AdjacentAgentSensor {
                 characterCenter.set(character.getPosition().x + (character.getSize()/2), character.getPosition().y + (character.getSize()/2));
                 if(adjacent.dst(character.getPosition()) < RANGE)
                 {
-                    float angle = (character.getPosition().angle(adjacent) );// + character.getAngle());
                     double degrees = Math.atan2(
                             characterCenter.y - adjacent.y,
                             characterCenter.x - adjacent.x
                     ) * 180.0d / Math.PI;
-                    degrees += 90;
+                    degrees += 180;
+                    degrees += character.getAngle();
                     if(degrees < 0)
                     {
                         degrees += 360;

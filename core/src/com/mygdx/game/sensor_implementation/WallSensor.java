@@ -28,10 +28,8 @@ public class WallSensor {
     /**
      * Sense will do the wall sensing for the given character and offset angle
      * @param objects - the objects in the game world
-     * @return - the distance of the closest wall that the wall sensor finds
-     *         - -1 if the wall sensor did not find a wall within the given range
      */
-    public float Sense(List<FixedObject> objects) {
+    public void Sense(List<FixedObject> objects) {
 
         //To implement the wall sensor, we are going to create a ray
         //The ray will start at the center of the character and extend in the direction of the angle with respect to the character
@@ -53,33 +51,34 @@ public class WallSensor {
         float distToClosestObject = Float.MAX_VALUE;
 
         for (FixedObject object : objects) {
+            if(!object.getIsAgent()){
+                boolean intersected;
 
-            boolean intersected;
+                //For each game object, create a bounding box for it
+                //Then check if the ray intersects the bounding box
+                //If it intersects, it will update intersection (a vector) to be the intersection point
+                Vector3 min = new Vector3(object.getPosition().x, object.getPosition().y, 0);
+                Vector3 max = new Vector3(object.getPosition().x + object.getWidth(), object.getPosition().y + object.getHeight(), 0);
 
-            //For each game object, create a bounding box for it
-            //Then check if the ray intersects the bounding box
-            //If it intersects, it will update intersection (a vector) to be the intersection point
-            Vector3 min = new Vector3(object.getPosition().x, object.getPosition().y, 0);
-            Vector3 max = new Vector3(object.getPosition().x + object.getWidth(), object.getPosition().y + object.getHeight(), 0);
+                BoundingBox boundingBox = new BoundingBox(min, max);
+                intersected = Intersector.intersectRayBounds(ray, boundingBox, intersection);
 
-            BoundingBox boundingBox = new BoundingBox(min, max);
-            intersected = Intersector.intersectRayBounds(ray, boundingBox, intersection);
-
-            //Now find the distance to the intersection point (if there was one)
-            if (intersected) {
-                float intersectDistance = characterCenter.dst(intersection);
-                //Check to see if this object is the closest object
-                if (intersectDistance < distToClosestObject) {
-                    distToClosestObject = intersectDistance;
+                //Now find the distance to the intersection point (if there was one)
+                if (intersected) {
+                    float intersectDistance = characterCenter.dst(intersection);
+                    //Check to see if this object is the closest object
+                    if (intersectDistance < distToClosestObject) {
+                        distToClosestObject = intersectDistance;
+                    }
                 }
             }
-        }
 
+        }
         if (distToClosestObject > RANGE) {
             distToClosestObject = -1;
         }
 
         if (distToClosestObject >= 0) {System.out.println("Wall Sensor: " + distToClosestObject);}
-        return distToClosestObject;
+
     }
 }
