@@ -43,7 +43,7 @@ public class Character {
             vel.add(forward * (float)Math.cos(Math.toRadians (ang)) * SPEED_FACTOR,
                     forward * (float)-Math.sin (Math.toRadians (ang)) * SPEED_FACTOR);
         } else {
-            // Slow the ship down over time.
+            // Slow the character down over time.
             vel.scl(FORWARD_DECAY);
         }
 
