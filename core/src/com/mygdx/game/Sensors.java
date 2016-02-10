@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -81,10 +82,8 @@ public class Sensors extends ApplicationAdapter {
 
 		controller.readInput();
 		character.move(controller.getForward(), controller.getTurn(), bounds, agentList);
-		//character.checkForCollisions(agentList);
 
 		batch.draw(backgroundTexture, 0, 0);
-		//System.out.println(character.getPosition().x + " " + character.getPosition().y);
 		batch.draw(characterRegion, character.getPosition().x, character.getPosition().y,
 				character.getSize()/2, character.getSize()/2, character.getSize(), character.getSize(),
 				1, 1, (-character.getAngle()+270%360));
