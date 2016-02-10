@@ -93,17 +93,25 @@ public class Character {
         if (pos.x <= bounds.x) {
             vel.x = 0;
             pos.x = bounds.x;
-        } else if (pos.x >= bounds.width) {
+        } else if (pos.x + SIZE >= bounds.width) {
             vel.x = 0;
-            pos.x = bounds.width - 1.0f;
+            pos.x = bounds.width - SIZE - 1.0f;
         }
 
         if (pos.y <= bounds.y) {
             vel.y = 0;
             pos.y = bounds.y;
-        } else if (pos.y >= bounds.height) {
+        } else if (pos.y + SIZE >= bounds.height) {
             vel.y = 0;
-            pos.y = bounds.height - 1.0f;
+            pos.y = bounds.height - SIZE - 1.0f;
+        }
+    }
+
+    private void adjustToFixedObjectBounds(Rectangle bounds) {
+
+        if (pos.x >= bounds.x && pos.x <= bounds.x + bounds.width
+                && pos.y >= bounds.y && pos.y <= pos.y + bounds.height) {
+            
         }
     }
 }
