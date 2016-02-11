@@ -9,6 +9,9 @@ import com.mygdx.game.FixedObject;
 
 import java.util.List;
 
+/**
+ * This is the class used to add a wall sensor to the character
+ */
 public class WallSensor {
 
     private static final float RANGE = 200;

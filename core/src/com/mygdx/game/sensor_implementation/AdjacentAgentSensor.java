@@ -7,6 +7,9 @@ import com.mygdx.game.Character;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Senses all surroundings for agents (up to the specified range)
+ */
 public class AdjacentAgentSensor {
 
     private static final int RANGE = 200;

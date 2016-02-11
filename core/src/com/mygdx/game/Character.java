@@ -9,6 +9,9 @@ import com.mygdx.game.sensor_implementation.WallSensor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The character is the movable agent that is controlled by the user
+ */
 public class Character {
     // Size of character.
     private static final int SIZE  = 25;
@@ -17,7 +20,6 @@ public class Character {
     // Decay speed.
     private static final float FORWARD_DECAY = 0.6f;
 
-    private AdjacentAgentSensor aaSensor = new AdjacentAgentSensor(this);
     private PieSliceSensor psSensor = new PieSliceSensor(this, 0, 0);
     private AdjacentAgentSensor aaSensor;
     private List<WallSensor> wallSensors;
@@ -73,17 +75,15 @@ public class Character {
         }
         adjustToBounds(bounds);
         evaluateAASensor(objects);
-        int count = 0;
-        for (WallSensor wallSensor : wallSensors) {
-            evaluateWallSensor(wallSensors.get(count), objects);
-            count++;
-        }
-
-        evaluateWallSensor(objects);
+        psSensor.resetSensorResults();
         evaluatePieSliceSensor(objects, 0, 90);
         evaluatePieSliceSensor(objects, 90, 180);
         evaluatePieSliceSensor(objects, 180, 270);
         evaluatePieSliceSensor(objects, 270, 360);
+
+        for (int i=0; i<wallSensors.size(); i++) {
+            evaluateWallSensor(wallSensors.get(i), objects);
+        }
     }
 
     private void processTurn(float turn) {
@@ -131,8 +131,7 @@ public class Character {
     public void evaluatePieSliceSensor(List<FixedObject> objects, int min, int max){
         psSensor.setDegreesMin(min);
         psSensor.setDegreesMax(max);
-        int num = psSensor.detect(objects);
-        System.out.println("There are " + num + " entities between " + min + " " + max);
+        psSensor.detect(objects);
     }
 
     public Vector2 getPosition() {
@@ -169,5 +168,9 @@ public class Character {
 
     public AdjacentAgentSensor getAaSensor() {
         return aaSensor;
+    }
+
+    public PieSliceSensor getPsSensor() {
+        return psSensor;
     }
 }
