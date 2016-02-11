@@ -116,6 +116,8 @@ public class Character {
         }
         adjustToBounds(bounds);
         evaluateAASensor(objects);
+        int count = 0;
+
         psSensor.resetSensorResults();
         evaluatePieSliceSensor(objects, 0, 90);
         evaluatePieSliceSensor(objects, 90, 180);
