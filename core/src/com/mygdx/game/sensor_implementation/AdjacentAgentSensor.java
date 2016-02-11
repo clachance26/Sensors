@@ -22,6 +22,10 @@ public class AdjacentAgentSensor {
         this.character = character;
     }
 
+    /**
+     * called by the character when it wants to scan surroundings
+     * @param objects list of object in the game
+     */
     public void detect(List<FixedObject> objects) {
 
         adjacentObjects = new ArrayList<>();

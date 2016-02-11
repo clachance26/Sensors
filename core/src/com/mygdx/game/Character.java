@@ -30,7 +30,13 @@ public class Character {
     private Vector2 vel;
     // Current angle of the character
     protected float ang;
-    
+
+    /**
+     * creates the character and initializes its sensors
+     * @param x position
+     * @param y position
+     * @param ang its angle heading
+     */
     public Character(float x, float y, float ang) {
         // Set the position of this character
         this.pos = new Vector2(x,y);
@@ -48,6 +54,14 @@ public class Character {
 
     }
 
+    /**
+     * This reads input and moves the character based on the input
+     * It will also perform a scan with each of its sensors
+     * @param forward whether or not to move forward or backward
+     * @param turn whether we should turn
+     * @param bounds bounds of the game world (edges of the world)
+     * @param objects game objects
+     */
     public void move(float forward, float turn, Rectangle bounds, List objects){
         processTurn(turn);
         if (forward != 0.0f) {
@@ -108,6 +122,9 @@ public class Character {
         }
     }
 
+    /**
+     * makes sure we do not go through agents and walls
+     */
     public boolean checkForCollisions(List<FixedObject> objects) {
         for(FixedObject object : objects)
         {
@@ -121,13 +138,22 @@ public class Character {
         return false;
     }
 
+    /**
+     * performs a scan with the adjacent agent sensor
+     */
     private void evaluateAASensor(List<FixedObject> objects) {aaSensor.detect(objects);
     }
 
+    /**
+     * performs a scan with the wall sensor
+     */
     public void evaluateWallSensor(WallSensor wallSensor, List<FixedObject> objects) {
         wallSensor.Sense(objects);
     }
 
+    /**
+     * performs a scan with the pie slice sensor
+     */
     public void evaluatePieSliceSensor(List<FixedObject> objects, int min, int max){
         psSensor.setDegreesMin(min);
         psSensor.setDegreesMax(max);

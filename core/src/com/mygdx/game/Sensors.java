@@ -46,6 +46,8 @@ public class Sensors extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+
+		//Create all of the textures needed
 		backgroundTexture = new Texture("background.png");
 		characterTexture = new Texture("character.png");
 		horizontalWallTexture = new Texture("horizontalWall.png");
@@ -53,6 +55,7 @@ public class Sensors extends ApplicationAdapter {
 		agent1Texture = new Texture("agent1.png");
 		agent2Texture = new Texture("agent2.png");
 
+		//Scan input file for agent locations
 		Scanner scanner;
 		try {
 			scanner = new Scanner(new File("agentLocations.txt"));
@@ -64,6 +67,8 @@ public class Sensors extends ApplicationAdapter {
 			e.printStackTrace();
 		}
 
+		//Initialize the game objects
+		//Give the character a controller to manage input
 		controller = new KeyboardController();
 		character = new Character(800, 100, 270);
 		characterRegion = new TextureRegion(characterTexture);
@@ -72,6 +77,7 @@ public class Sensors extends ApplicationAdapter {
 		agent1 = new FixedObject(a1x, a1y, 0, 100, 100, true);
 		agent2 = new FixedObject(a2x, a2y, 0, 100, 100, true);
 
+		//Add game objects to the agent list
 		agentList.add(agent1);
 		agentList.add(agent2);
 		agentList.add(horizontalWall);
@@ -84,9 +90,12 @@ public class Sensors extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
+		//Read input and process movement
+		//Move also will perform a scan with all of the sensors
 		controller.readInput();
 		character.move(controller.getForward(), controller.getTurn(), bounds, agentList);
 
+		//Draw our textures based on their position
 		batch.draw(backgroundTexture, 0, 0);
 		batch.draw(characterRegion, character.getPosition().x, character.getPosition().y,
 				character.getSize()/2, character.getSize()/2, character.getSize(), character.getSize(),
@@ -96,6 +105,7 @@ public class Sensors extends ApplicationAdapter {
 		batch.draw(agent1Texture, agent1.getPosition().x, agent1.getPosition().y);
 		batch.draw(agent2Texture, agent2.getPosition().x, agent2.getPosition().y);
 
+		//This will periodically print
 		if (renderCount % debugOutputUpdateRate == 0) {
 			DebugOutput.printOutput(character);
 		}

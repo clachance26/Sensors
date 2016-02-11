@@ -2,6 +2,10 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * These are the objects in the game world that are not able to move
+ * This includes the 2 agents that are not controlled by the user because once they are set, they will not move
+ */
 public class FixedObject {
     // Size of object.
     private int height;

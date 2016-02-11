@@ -29,54 +29,43 @@ public class PieSliceSensor {
             results = new ArrayList<>();
         }
 
-        public void setDegreesMin(int min) {
-            degreesMin = min;
-        }
+    /**
+     * called by the character when it wants to detect object in its pie slice specified by the bounds stored in this object
+     * the pice slice bounds must be updated before calling this function
+     * @param objects game objects
+     */
+    public void detect(List<FixedObject> objects) {
+        count = 0;
 
-        public int getDegreesMin() {
-            return degreesMin;
-        }
-
-        public void setDegreesMax(int max) {
-            degreesMax = max;
-        }
-
-        public int getDegreesMax() {
-            return degreesMax;
-        }
-
-        public void detect(List<FixedObject> objects) {
-            count = 0;
-
-            for(FixedObject object : objects)
+        for(FixedObject object : objects)
+        {
+            if(object.getIsAgent())
             {
-                if(object.getIsAgent())
+                adjacent.set(object.getPosition().x + (object.getWidth()/2), object.getPosition().y + (object.getHeight()/2));
+                characterCenter.set(character.getPosition().x + (character.getSize()/2), character.getPosition().y + (character.getSize()/2));
+                if(adjacent.dst(character.getPosition()) < RANGE)
                 {
-                    adjacent.set(object.getPosition().x + (object.getWidth()/2), object.getPosition().y + (object.getHeight()/2));
-                    characterCenter.set(character.getPosition().x + (character.getSize()/2), character.getPosition().y + (character.getSize()/2));
-                    if(adjacent.dst(character.getPosition()) < RANGE)
+                    double degrees = Math.atan2(
+                            characterCenter.y - adjacent.y,
+                            characterCenter.x - adjacent.x
+                    ) * 180.0d / Math.PI;
+                    degrees += 180;
+                    degrees += character.getAngle();
+                    if(degrees < 0)
                     {
-                        double degrees = Math.atan2(
-                                characterCenter.y - adjacent.y,
-                                characterCenter.x - adjacent.x
-                        ) * 180.0d / Math.PI;
-                        degrees += 180;
-                        degrees += character.getAngle();
-                        if(degrees < 0)
-                        {
-                            degrees += 360;
-                        }
-                        degrees = degrees % 360;
-                        if(degrees > degreesMin && degrees < degreesMax)
-                        {
-                            count++;
-                        }
-
+                        degrees += 360;
                     }
+                    degrees = degrees % 360;
+                    if(degrees > degreesMin && degrees < degreesMax)
+                    {
+                        count++;
+                    }
+
                 }
             }
-            results.add(new PieSliceResults(degreesMin, degreesMax, count));
         }
+        results.add(new PieSliceResults(degreesMin, degreesMax, count));
+    }
 
     public List<PieSliceResults> getResults() {
         return results;
@@ -86,5 +75,21 @@ public class PieSliceSensor {
         if (results != null) {
             results.clear();
         }
+    }
+
+    public void setDegreesMin(int min) {
+        degreesMin = min;
+    }
+
+    public int getDegreesMin() {
+        return degreesMin;
+    }
+
+    public void setDegreesMax(int max) {
+        degreesMax = max;
+    }
+
+    public int getDegreesMax() {
+        return degreesMax;
     }
 }
