@@ -34,7 +34,7 @@ public class DebugOutput {
         int count = 1;
         for (AdjacentObject adjacentObject: character.getAaSensor().getAdjacentObjects()) {
             sb.append(count + ") Distance: " + String.format("%.4f", adjacentObject.getDist()) + "\t\tHeading: "
-                    + String.format("%.4f",adjacentObject.getDist()) + "\n");
+                    + String.format("%.4f",adjacentObject.getDegrees()) + "\n");
             count++;
         }
 
