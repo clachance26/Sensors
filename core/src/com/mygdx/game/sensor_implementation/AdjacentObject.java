@@ -1,8 +1,5 @@
 package com.mygdx.game.sensor_implementation;
 
-/**
- * Created by Christopher on 2/10/2016.
- */
 public class AdjacentObject {
 
     double degrees;

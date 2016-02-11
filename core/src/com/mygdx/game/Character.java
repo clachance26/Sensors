@@ -17,6 +17,8 @@ public class Character {
     private static final int SIZE  = 25;
     // Speed factor.
     private static final float SPEED_FACTOR = 0.1f;
+    //Max speed
+    private static final float SPEED_LIMIT = 15;
     // Decay speed.
     private static final float FORWARD_DECAY = 0.6f;
 
@@ -68,6 +70,18 @@ public class Character {
             // Forward key pressed. increase speed.
             vel.add(forward * (float)Math.cos(Math.toRadians (ang)) * SPEED_FACTOR,
                     forward * (float)-Math.sin (Math.toRadians (ang)) * SPEED_FACTOR);
+            if (vel.x > SPEED_LIMIT) {
+                vel.x = SPEED_LIMIT;
+            }
+            if (vel.x < -SPEED_LIMIT) {
+                vel.x = -SPEED_LIMIT;
+            }
+            if (vel.y > SPEED_LIMIT) {
+                vel.y = SPEED_LIMIT;
+            }
+            if (vel.y < -SPEED_LIMIT) {
+                vel.y = -SPEED_LIMIT;
+            }
         } else {
             // Slow the character down over time.
             vel.scl(FORWARD_DECAY);
@@ -83,8 +97,21 @@ public class Character {
             pos.add(vel);
         }
         else{
-            vel.x = vel.x*-1;
-            vel.y = vel.y*-1;
+            vel.x = vel.x*-2;
+            vel.y = vel.y*-2;
+            if (vel.x > SPEED_LIMIT) {
+                vel.x = SPEED_LIMIT;
+            }
+            if (vel.x < -SPEED_LIMIT) {
+                vel.x = -SPEED_LIMIT;
+            }
+            if (vel.y > SPEED_LIMIT) {
+                vel.y = SPEED_LIMIT;
+            }
+            if (vel.y < -SPEED_LIMIT) {
+                vel.y = -SPEED_LIMIT;
+            }
+
             pos.add(vel);
         }
         adjustToBounds(bounds);
