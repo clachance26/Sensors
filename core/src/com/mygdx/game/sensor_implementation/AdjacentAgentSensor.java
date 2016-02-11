@@ -28,7 +28,7 @@ public class AdjacentAgentSensor {
      */
     public void detect(List<FixedObject> objects) {
 
-        adjacentObjects = new ArrayList<>();
+        adjacentObjects = new ArrayList<AdjacentObject>();
 
         for(FixedObject object : objects)
         {

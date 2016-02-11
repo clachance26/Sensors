@@ -49,7 +49,7 @@ public class Character {
 
         //Initialize Sensors
         aaSensor = new AdjacentAgentSensor(this);
-        wallSensors = new ArrayList<>();
+        wallSensors = new ArrayList<WallSensor>();
         wallSensors.add(new WallSensor(0, this, "front"));
         wallSensors.add((new WallSensor(90, this, "right")));
         wallSensors.add(new WallSensor(270, this, "left"));

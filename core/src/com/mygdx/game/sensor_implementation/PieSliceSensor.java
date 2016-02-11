@@ -26,7 +26,7 @@ public class PieSliceSensor {
             this.character = character;
             degreesMin = min;
             degreesMax = max;
-            results = new ArrayList<>();
+            results = new ArrayList<PieSliceResults>();
         }
 
     /**
